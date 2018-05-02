@@ -22,13 +22,14 @@ public class NaggingAnnController {
 	
 	@GetMapping(path="/add") // Map ONLY GET Requests
 	public @ResponseBody String addNewMedication (@RequestParam String name
-			, @RequestParam int dosageAmount, @RequestParam int dosageFrequency, @RequestParam String dosageDuration) {
+			, @RequestParam int dosageAmount, @RequestParam int dosageFrequency, @RequestParam String dosageDuration, @RequestParam String type) {
 
 		Medication med = new Medication();
 		med.setName(name);
 		med.setDosageAmount(dosageAmount);
 		med.setDosageFrequency(dosageFrequency);
 		med.setDosageDuration(dosageDuration);
+		med.setType(type);
 		medicationRepository.save(med);
 		return "Saved";
 	}
@@ -46,9 +47,15 @@ public class NaggingAnnController {
 	}
 	
 	@GetMapping(path="/search")
-	public @ResponseBody Optional<Medication> getMedicationsByName(@RequestParam(name="name", required=false) String name) {
+	public @ResponseBody Iterable<Medication> getMedicationsByName(@RequestParam(name="name", required=false) String name) {
 		// This returns a JSON or XML with the Meds
 		return medicationRepository.findByName(name);
+	}
+	
+	@GetMapping(path="/searchByType")
+	public @ResponseBody Iterable<Medication> getMedicationsByType(@RequestParam(name="type", required=false) String type) {
+		// This returns a JSON or XML with the Meds
+		return medicationRepository.findByType(type);
 	}
 	
 	

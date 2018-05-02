@@ -1,6 +1,8 @@
 package naggingann;
 
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MedicationRepository extends CrudRepository<Medication, Long> {
 	
     @Query(value = "SELECT * FROM medication m where m.name = :name", nativeQuery=true)
-    public Optional<Medication> findByName(@Param("name") String name);
+    public List<Medication> findByName(@Param("name") String name);
+    
+    @Query(value = "SELECT * FROM medication m where m.type = :type", nativeQuery=true)
+    public List<Medication> findByType(@Param("type") String type);
     
     @Transactional
     @Modifying
